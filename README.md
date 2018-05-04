@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-Online Shopping Mall
-=======
 # Java 企业级电商项目
 ## 项目简介
  待补充。。。
