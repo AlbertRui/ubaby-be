@@ -2,7 +2,6 @@ package com.ubaby.controller.portal;
 
 import com.ubaby.common.Const;
 import com.ubaby.common.ServerResponse;
-import com.ubaby.dao.UserMapper;
 import com.ubaby.pojo.User;
 import com.ubaby.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +58,15 @@ public class UserController {
     @ResponseBody
     public ServerResponse<String> checkValid(String str, String type) {
         return userService.checkValid(str, type);
+    }
+
+    @RequestMapping(value = "get_user_info.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<User> getUserInfo(HttpSession session) {
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user != null)
+            return ServerResponse.createBySuccess(user);
+        return ServerResponse.createByErrorMessage("用户未登录，无法获取当前用户信息！");
     }
 
 }
