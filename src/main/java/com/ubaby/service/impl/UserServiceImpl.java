@@ -1,6 +1,5 @@
 package com.ubaby.service.impl;
 
-import com.sun.deploy.security.ValidationState;
 import com.ubaby.common.Const;
 import com.ubaby.common.ServerResponse;
 import com.ubaby.dao.UserMapper;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
  * @author AlbertRui
  * @date 2018-05-04 20:13
  */
+@SuppressWarnings("JavaDoc")
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
@@ -70,5 +70,22 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.createByErrorMessage("参数错误");
         }
         return ServerResponse.createBySuccessMessage("校验成功");
+    }
+
+    /**
+     * 密码提示接口
+     *
+     * @param username
+     * @return
+     */
+    @Override
+    public ServerResponse<String> selectQuestion(String username) {
+        ServerResponse<String> validResponse = this.checkValid(username, Const.USERNAME);
+        if (validResponse.isSuccess())
+            return ServerResponse.createByErrorMessage("用户不存在");//也就是调用checkValid方法校验成功
+        String question = userMapper.selectQuestionByUsername(username);
+        if (StringUtils.isNotBlank(question))
+            return ServerResponse.createBySuccess(question);
+        return ServerResponse.createByErrorMessage("找回密码的问题是空的");
     }
 }

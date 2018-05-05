@@ -34,4 +34,12 @@ public interface UserService {
      * @return
      */
     ServerResponse<String> checkValid(String str, String type);
+
+    /**
+     * 密码提示接口
+     *
+     * @param username
+     * @return
+     */
+    ServerResponse<String> selectQuestion(String username);
 }
