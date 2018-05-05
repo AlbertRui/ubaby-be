@@ -2,13 +2,25 @@ package com.ubaby.service;
 
 import com.ubaby.common.ServerResponse;
 import com.ubaby.pojo.User;
-import org.springframework.stereotype.Service;
 
 /**
  * @author AlbertRui
  * @date 2018-05-04 20:11
  */
-@Service
 public interface UserService {
+
+    /**
+     * 用户登录业务接口
+     * @param username
+     * @param password
+     * @return
+     */
     ServerResponse<User> login(String username, String password);
+
+    /**
+     * 用户注册业务接口
+     * @param user
+     * @return
+     */
+    ServerResponse<String> register(User user);
 }
