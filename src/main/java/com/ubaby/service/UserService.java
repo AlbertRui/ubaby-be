@@ -53,4 +53,14 @@ public interface UserService {
      * @return
      */
     ServerResponse<String> checkAnswer(String username, String question, String answer);
+
+    /**
+     * 忘记密码后重置密码接口
+     *
+     * @param username
+     * @param passwordNew
+     * @param forgetToken
+     * @return
+     */
+    ServerResponse<String> forgetResetPassword(String username, String passwordNew, String forgetToken);
 }

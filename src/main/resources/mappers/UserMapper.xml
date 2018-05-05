@@ -150,6 +150,11 @@
             update_time = now()
         WHERE id = #{id,jdbcType=INTEGER}
     </update>
+    <update id="updatePasswordByUsername" parameterType="map">
+        UPDATE ubaby_user
+        SET password = #{passwordNew}, update_time = now()
+        WHERE username = #{username}
+    </update>
     <select id="checkUsername" resultType="int" parameterType="String">
         SELECT count(1)
         FROM ubaby_user
