@@ -1,6 +1,7 @@
 package com.ubaby.controller.portal;
 
 import com.ubaby.common.Const;
+import com.ubaby.common.ResponseCode;
 import com.ubaby.common.ServerResponse;
 import com.ubaby.pojo.User;
 import com.ubaby.service.UserService;
@@ -111,6 +112,19 @@ public class UserController {
             session.setAttribute(Const.CURRENT_USER, response.getData());
 
         return response;
+    }
+
+    @RequestMapping(value = "get_user_details.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<User> getUserDetails(HttpSession session) {
+        
+        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+
+        if (currentUser == null)
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "未登录，需要强制登录");
+
+        return userService.getUserDetails(currentUser.getId());
+
     }
 
 }

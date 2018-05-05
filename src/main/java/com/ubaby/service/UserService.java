@@ -80,4 +80,12 @@ public interface UserService {
      * @return
      */
     ServerResponse<User> updateUserInfo(User user);
+
+    /**
+     * 获取用户详细信息
+     *
+     * @param user
+     * @return
+     */
+    ServerResponse<User> getUserDetails(Integer userId);
 }

@@ -199,4 +199,22 @@ public class UserServiceImpl implements UserService {
         return ServerResponse.createByErrorMessage("更新个人信息失败");
     }
 
+    /**
+     * 获取用户详细信息
+     *
+     * @param user
+     * @return
+     */
+    @Override
+    public ServerResponse<User> getUserDetails(Integer userId) {
+
+        User user = userMapper.selectByPrimaryKey(userId);
+        if (user == null)
+            return ServerResponse.createByErrorMessage("找不到当前用户");
+
+        user.setPassword(StringUtils.EMPTY);
+        return ServerResponse.createBySuccess(user);
+
+    }
+
 }
