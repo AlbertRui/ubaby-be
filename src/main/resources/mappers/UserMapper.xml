@@ -155,12 +155,12 @@
         SET password = #{passwordNew}, update_time = now()
         WHERE username = #{username}
     </update>
-    <select id="checkUsername" resultType="int" parameterType="String">
+    <select id="checkUsername" resultType="java.lang.Integer" parameterType="String">
         SELECT count(1)
         FROM ubaby_user
         WHERE username = #{username}
     </select>
-    <select id="checkEmail" resultType="int" parameterType="String">
+    <select id="checkEmail" resultType="java.lang.Integer" parameterType="String">
         SELECT count(1)
         FROM ubaby_user
         WHERE email = #{email}
@@ -172,7 +172,7 @@
         WHERE username = #{username}
         AND password = #{password}
     </select>
-    <select id="selectQuestionByUsername" resultType="string" parameterType="string">
+    <select id="selectQuestionByUsername" resultType="java.lang.String" parameterType="string">
         SELECT question
         FROM ubaby_user
         WHERE username = #{username}
@@ -183,5 +183,11 @@
         WHERE username = #{username}
               AND question = #{question}
               AND answer = #{answer}
+    </select>
+    <select id="checkPassword" resultType="java.lang.Integer" parameterType="map">
+        SELECT count(1)
+        FROM ubaby_user
+        WHERE password = #{password}
+              AND ubaby_user.id = #{userId}
     </select>
 </mapper>
