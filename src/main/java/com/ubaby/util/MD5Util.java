@@ -1,5 +1,7 @@
 package com.ubaby.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.security.MessageDigest;
 
 /**
