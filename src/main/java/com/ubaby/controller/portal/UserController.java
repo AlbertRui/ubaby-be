@@ -2,6 +2,7 @@ package com.ubaby.controller.portal;
 
 import com.ubaby.common.Const;
 import com.ubaby.common.ServerResponse;
+import com.ubaby.dao.UserMapper;
 import com.ubaby.pojo.User;
 import com.ubaby.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +42,17 @@ public class UserController {
         return response;
     }
 
-    @RequestMapping(value = "logout.do", method = RequestMethod.POST)
+    @RequestMapping(value = "logout.do", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<String> logout(HttpSession session) {
         session.removeAttribute(Const.CURRENT_USER);
         return ServerResponse.createBySuccess();
+    }
+
+    @RequestMapping(value = "register.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<String> register(User user) {
+        return userService.register(user);
     }
 
 }
