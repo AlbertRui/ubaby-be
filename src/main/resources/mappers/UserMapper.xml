@@ -190,4 +190,10 @@
         WHERE password = #{password}
               AND ubaby_user.id = #{userId}
     </select>
+    <select id="checkEmailByUserId" resultType="java.lang.Integer" parameterType="map">
+        SELECT count(1)
+        FROM ubaby_user
+        WHERE email = #{email}
+              AND id != #{userId}
+    </select>
 </mapper>
