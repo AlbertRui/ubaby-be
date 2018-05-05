@@ -7,6 +7,7 @@ import com.ubaby.pojo.User;
  * @author AlbertRui
  * @date 2018-05-04 20:11
  */
+@SuppressWarnings("JavaDoc")
 public interface UserService {
 
     /**
@@ -42,4 +43,14 @@ public interface UserService {
      * @return
      */
     ServerResponse<String> selectQuestion(String username);
+
+    /**
+     * 校验密码提示问题
+     *
+     * @param username
+     * @param question
+     * @param answer
+     * @return
+     */
+    ServerResponse<String> checkAnswer(String username, String question, String answer);
 }

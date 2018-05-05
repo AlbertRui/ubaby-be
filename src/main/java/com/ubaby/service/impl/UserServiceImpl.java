@@ -2,6 +2,7 @@ package com.ubaby.service.impl;
 
 import com.ubaby.common.Const;
 import com.ubaby.common.ServerResponse;
+import com.ubaby.common.TokenCache;
 import com.ubaby.dao.UserMapper;
 import com.ubaby.pojo.User;
 import com.ubaby.service.UserService;
@@ -9,6 +10,8 @@ import com.ubaby.util.MD5Util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 /**
  * @author AlbertRui
@@ -87,5 +90,27 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isNotBlank(question))
             return ServerResponse.createBySuccess(question);
         return ServerResponse.createByErrorMessage("找回密码的问题是空的");
+    }
+
+    /**
+     * 校验密码提示问题
+     *
+     * @param username
+     * @param question
+     * @param answer
+     * @return
+     */
+    @Override
+    public ServerResponse<String> checkAnswer(String username, String question, String answer) {
+        int resultCount = userMapper.checkAnswer(username, question, answer);
+
+        //说明问题及问题的答案是这个用户的，并且是正确的
+        if (resultCount > 0) {
+            String forgetToken = UUID.randomUUID().toString();
+            TokenCache.setKey("token_" + username, forgetToken);
+            return ServerResponse.createBySuccess(forgetToken);
+        }
+
+        return ServerResponse.createByErrorMessage("答案错误！");
     }
 }
