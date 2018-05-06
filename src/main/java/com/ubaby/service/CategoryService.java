@@ -19,7 +19,7 @@ public interface CategoryService {
      * @param parentId
      * @return
      */
-    ServerResponse addCategory(String categoryName, Integer parentId);
+    ServerResponse<String> addCategory(String categoryName, Integer parentId);
 
     /**
      * 跟新品类名称
@@ -28,7 +28,7 @@ public interface CategoryService {
      * @param categoryName
      * @return
      */
-    ServerResponse updateCategoryName(Integer categoryId, String categoryName);
+    ServerResponse<String> updateCategoryName(Integer categoryId, String categoryName);
 
     /**
      * 查询子节点的category信息，并且不递归，保持平级

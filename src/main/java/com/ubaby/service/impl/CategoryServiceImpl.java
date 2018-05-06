@@ -37,7 +37,7 @@ public class CategoryServiceImpl implements CategoryService {
      * @return
      */
     @Override
-    public ServerResponse addCategory(String categoryName, Integer parentId) {
+    public ServerResponse<String> addCategory(String categoryName, Integer parentId) {
 
         if (parentId == null || StringUtils.isBlank(categoryName))
             return ServerResponse.createByErrorMessage("品类参数错误");
@@ -62,7 +62,7 @@ public class CategoryServiceImpl implements CategoryService {
      * @return
      */
     @Override
-    public ServerResponse updateCategoryName(Integer categoryId, String categoryName) {
+    public ServerResponse<String> updateCategoryName(Integer categoryId, String categoryName) {
 
         if (categoryId == null || StringUtils.isBlank(categoryName))
             return ServerResponse.createByErrorMessage("更新品类参数错误");
@@ -101,6 +101,7 @@ public class CategoryServiceImpl implements CategoryService {
      * @param categoryId
      * @return
      */
+    @Override
     public ServerResponse<List<Integer>> getCategoryAndChildrenById(Integer categoryId) {
 
         Set<Category> categorySet = Sets.newHashSet();
