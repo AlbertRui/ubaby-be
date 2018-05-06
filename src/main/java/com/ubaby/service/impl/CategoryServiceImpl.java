@@ -4,9 +4,14 @@ import com.ubaby.common.ServerResponse;
 import com.ubaby.dao.CategoryMapper;
 import com.ubaby.pojo.Category;
 import com.ubaby.service.CategoryService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author AlbertRui
@@ -16,9 +21,18 @@ import org.springframework.stereotype.Service;
 @Service("categoryService")
 public class CategoryServiceImpl implements CategoryService {
 
+    private Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
+
     @Autowired
     private CategoryMapper categoryMapper;
 
+    /**
+     * 添加品类
+     *
+     * @param categoryName
+     * @param parentId
+     * @return
+     */
     @Override
     public ServerResponse addCategory(String categoryName, Integer parentId) {
 
@@ -59,5 +73,22 @@ public class CategoryServiceImpl implements CategoryService {
             return ServerResponse.createBySuccess("更新品类名称成功");
 
         return ServerResponse.createByErrorMessage("更新品类名称使白");
+    }
+
+    /**
+     * 查询子节点的category信息，并且不递归，保持平级
+     *
+     * @param categoryId
+     * @return
+     */
+    @Override
+    public ServerResponse<List<Category>> getChildrenParallelCategory(Integer categoryId) {
+
+        List<Category> categories = categoryMapper.selectCategoryChildrenByParentId(categoryId);
+        if (CollectionUtils.isEmpty(categories))
+            logger.info("未找到当前分类的子分类");
+
+        return ServerResponse.createBySuccess(categories);
+
     }
 }

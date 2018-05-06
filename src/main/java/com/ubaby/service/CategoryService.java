@@ -1,11 +1,15 @@
 package com.ubaby.service;
 
 import com.ubaby.common.ServerResponse;
+import com.ubaby.pojo.Category;
+
+import java.util.List;
 
 /**
  * @author AlbertRui
  * @date 2018-05-06 0:46
  */
+@SuppressWarnings("JavaDoc")
 public interface CategoryService {
 
     /**
@@ -25,4 +29,13 @@ public interface CategoryService {
      * @return
      */
     ServerResponse updateCategoryName(Integer categoryId, String categoryName);
+
+    /**
+     * 查询子节点的category信息，并且不递归，保持平级
+     *
+     * @param categoryId
+     * @return
+     */
+    ServerResponse<List<Category>> getChildrenParallelCategory(Integer categoryId);
+
 }
