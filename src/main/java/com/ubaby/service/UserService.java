@@ -84,8 +84,19 @@ public interface UserService {
     /**
      * 获取用户详细信息
      *
-     * @param user
+     * @param userId
      * @return
      */
     ServerResponse<User> getUserDetails(Integer userId);
+
+    /*============================backend=================================*/
+
+    /**
+     * 校验是否是管理员
+     *
+     * @param user
+     * @return
+     */
+    ServerResponse<String> checkAdminRole(User user);
+
 }
