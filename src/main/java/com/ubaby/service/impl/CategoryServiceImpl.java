@@ -1,5 +1,7 @@
 package com.ubaby.service.impl;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.ubaby.common.ServerResponse;
 import com.ubaby.dao.CategoryMapper;
 import com.ubaby.pojo.Category;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author AlbertRui
@@ -91,4 +94,45 @@ public class CategoryServiceImpl implements CategoryService {
         return ServerResponse.createBySuccess(categories);
 
     }
+
+    /**
+     * 递归查询本节点的id及孩子节点的id
+     *
+     * @param categoryId
+     * @return
+     */
+    public ServerResponse<List<Integer>> getCategoryAndChildrenById(Integer categoryId) {
+
+        Set<Category> categorySet = Sets.newHashSet();
+        findChildrenCategory(categorySet, categoryId);
+
+        List<Integer> ids = Lists.newArrayList();
+        if (categoryId != null)
+            for (Category category : categorySet)
+                ids.add(category.getId());
+
+        return ServerResponse.createBySuccess(ids);
+
+    }
+
+    /**
+     * 递归查找当前节点及子节点品类
+     *
+     * @param categories
+     * @param categoryId
+     * @return
+     */
+    private void findChildrenCategory(Set<Category> categories, Integer categoryId) {
+
+        Category category = categoryMapper.selectByPrimaryKey(categoryId);
+        if (category != null)
+            categories.add(category);
+
+        List<Category> categoryList = categoryMapper.selectCategoryChildrenByParentId(categoryId);
+        for (Category categoryItem : categoryList) {
+            findChildrenCategory(categories, categoryItem.getId());
+        }
+
+    }
+
 }
