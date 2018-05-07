@@ -138,6 +138,34 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    /**
+     * 后台商品搜索
+     *
+     * @param productName
+     * @param productId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public ServerResponse<PageInfo<ProductList>> searchProduct(String productName, Integer productId, int pageNum, int pageSize) {
+
+        PageHelper.startPage(pageNum, pageSize);
+        if (StringUtils.isNotBlank(productName))
+            productName = "%" + productName + "%";
+
+        List<Product> products = productMapper.selectByNameAndId(productName, productId);
+        List<ProductList> productLists = Lists.newArrayList();
+        for (Product product : products)
+            productLists.add(assembleProductList(product));
+
+        PageInfo<ProductList> pageInfo = new PageInfo(products);
+        pageInfo.setList(productLists);
+
+        return ServerResponse.createBySuccess(pageInfo);
+
+    }
+
     /*==================================private methods==================================*/
 
     private ProductDetail assembleProductDetail(Product product) {

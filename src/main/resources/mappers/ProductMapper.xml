@@ -19,7 +19,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         id, category_id, name, subtitle, main_image, sub_images, detail, price, stock, status,
-        create_time, update_time
+                create_time, update_time
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -32,6 +32,18 @@
         <include refid="Base_Column_List"/>
         FROM ubaby_product
         ORDER BY id ASC
+    </select>
+    <select id="selectByNameAndId" resultMap="BaseResultMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        <where>
+            <if test="productName != null">
+                AND name like #{productName}
+            </if>
+            <if test="productId != null">
+                AND id = #{productId}
+            </if>
+        </where>
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         DELETE FROM ubaby_product
