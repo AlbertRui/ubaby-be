@@ -2,6 +2,7 @@ package com.ubaby.service;
 
 import com.ubaby.common.ServerResponse;
 import com.ubaby.pojo.Product;
+import com.ubaby.vo.ProductDetail;
 
 /**
  * @author AlbertRui
@@ -26,5 +27,13 @@ public interface ProductService {
      * @return
      */
     ServerResponse<String> setSaleStatus(Integer productId, Integer status);
+
+    /**
+     * 商品详细信息管理
+     *
+     * @param productId
+     * @return
+     */
+    ServerResponse<ProductDetail> manageProductDetail(Integer productId);
 
 }

@@ -5,11 +5,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.Properties;
 
 /**
- * Created by geely
+ * @author AlbertRui
+ * @date 2018-05-06 23:12
  */
 public class PropertiesUtil {
 
@@ -18,31 +21,41 @@ public class PropertiesUtil {
     private static Properties props;
 
     static {
+
         String fileName = "ubaby.properties";
         props = new Properties();
+
+        ClassLoader classLoader = PropertiesUtil.class.getClassLoader();
+        InputStream inStream = classLoader.getResourceAsStream(fileName);
         try {
-            props.load(new InputStreamReader(PropertiesUtil.class.getClassLoader().getResourceAsStream(fileName), "UTF-8"));
+            Reader reader = new InputStreamReader(inStream, "utf-8");
+            props.load(reader);
         } catch (IOException e) {
             logger.error("配置文件读取异常", e);
         }
+
     }
 
     public static String getProperty(String key) {
+
         String value = props.getProperty(key.trim());
-        if (StringUtils.isBlank(value)) {
+
+        if (StringUtils.isBlank(value))
             return null;
-        }
+
         return value.trim();
+
     }
 
     public static String getProperty(String key, String defaultValue) {
 
         String value = props.getProperty(key.trim());
-        if (StringUtils.isBlank(value)) {
-            value = defaultValue;
-        }
-        return value.trim();
-    }
 
+        if (StringUtils.isBlank(value))
+            value = defaultValue;
+
+        return value.trim();
+
+    }
 
 }
