@@ -1,19 +1,25 @@
 package com.ubaby.controller.backend;
 
+import com.google.common.collect.Maps;
 import com.ubaby.common.Const;
 import com.ubaby.common.ResponseCode;
 import com.ubaby.common.ServerResponse;
 import com.ubaby.pojo.Product;
 import com.ubaby.pojo.User;
+import com.ubaby.service.FileService;
 import com.ubaby.service.ProductService;
 import com.ubaby.service.UserService;
+import com.ubaby.util.PropertiesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * @author AlbertRui
@@ -28,6 +34,9 @@ public class ProductManageController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private FileService fileService;
 
     @RequestMapping("save.do")
     @ResponseBody
@@ -99,6 +108,32 @@ public class ProductManageController {
 
         if (userService.checkAdminRole(user).isSuccess())
             return productService.searchProduct(productName, productId, pageNum, pageSize);
+
+        return ServerResponse.createByErrorMessage("无权限操作");
+
+    }
+
+    @RequestMapping("upload.do")
+    @ResponseBody
+    public ServerResponse upload(HttpSession session, @RequestParam(value = "uploadFile", required = false) MultipartFile file, HttpServletRequest request) {
+
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null)
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "请您以管理员身份登录");
+
+        if (userService.checkAdminRole(user).isSuccess()) {
+
+            String path = request.getSession().getServletContext().getRealPath("upload");
+            String targetFileName = fileService.upload(file, path);
+            String url = PropertiesUtil.getProperty("ftp.server.http.prefix");
+
+            Map<String, String> fileMap = Maps.newHashMap();
+            fileMap.put("uri", targetFileName);
+            fileMap.put("url", url);
+
+            return ServerResponse.createBySuccess(fileMap);
+
+        }
 
         return ServerResponse.createByErrorMessage("无权限操作");
 
