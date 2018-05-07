@@ -27,6 +27,12 @@
         from ubaby_product
         where id = #{id,jdbcType=INTEGER}
     </select>
+    <select id="selectList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ubaby_product
+        ORDER BY id ASC
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         DELETE FROM ubaby_product
         WHERE id = #{id,jdbcType=INTEGER}

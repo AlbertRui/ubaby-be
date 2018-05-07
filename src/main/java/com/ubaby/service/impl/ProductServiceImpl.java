@@ -1,5 +1,8 @@
 package com.ubaby.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.ubaby.common.ResponseCode;
 import com.ubaby.common.ServerResponse;
 import com.ubaby.dao.CategoryMapper;
@@ -10,9 +13,12 @@ import com.ubaby.service.ProductService;
 import com.ubaby.util.DateTimeUtil;
 import com.ubaby.util.PropertiesUtil;
 import com.ubaby.vo.ProductDetail;
+import com.ubaby.vo.ProductList;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author AlbertRui
@@ -108,6 +114,30 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    /**
+     * 获取商品列表
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public ServerResponse<PageInfo<ProductList>> getProductList(int pageNum, int pageSize) {
+
+        PageHelper.startPage(pageNum, pageSize);
+
+        List<Product> products = productMapper.selectList();
+        List<ProductList> productLists = Lists.newArrayList();
+        for (Product product : products)
+            productLists.add(assembleProductList(product));
+
+        PageInfo<ProductList> pageInfo = new PageInfo(products);
+        pageInfo.setList(productLists);
+
+        return ServerResponse.createBySuccess(pageInfo);
+
+    }
+
     /*==================================private methods==================================*/
 
     private ProductDetail assembleProductDetail(Product product) {
@@ -136,6 +166,22 @@ public class ProductServiceImpl implements ProductService {
         productDetail.setUpdateTime(DateTimeUtil.dateToStr(product.getUpdateTime()));
 
         return productDetail;
+
+    }
+
+    private ProductList assembleProductList(Product product) {
+
+        ProductList productList = new ProductList();
+        productList.setId(product.getId());
+        productList.setCategoryId(product.getCategoryId());
+        productList.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.happymmall.com/"));
+        productList.setMainImage(product.getMainImage());
+        productList.setName(product.getName());
+        productList.setPrice(product.getPrice());
+        productList.setStatus(product.getStatus());
+        productList.setSubTitle(product.getSubtitle());
+
+        return productList;
 
     }
 

@@ -1,8 +1,10 @@
 package com.ubaby.service;
 
+import com.github.pagehelper.PageInfo;
 import com.ubaby.common.ServerResponse;
 import com.ubaby.pojo.Product;
 import com.ubaby.vo.ProductDetail;
+import com.ubaby.vo.ProductList;
 
 /**
  * @author AlbertRui
@@ -35,5 +37,14 @@ public interface ProductService {
      * @return
      */
     ServerResponse<ProductDetail> manageProductDetail(Integer productId);
+
+    /**
+     * 获取商品列表
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    ServerResponse<PageInfo<ProductList>> getProductList(int pageNum, int pageSize);
 
 }
