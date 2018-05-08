@@ -58,4 +58,12 @@ public interface ProductService {
      */
     ServerResponse<PageInfo<ProductList>> searchProduct(String productName, Integer productId, int pageNum, int pageSize);
 
+    /**
+     * 前台获取商品详细信息
+     *
+     * @param productId
+     * @return
+     */
+    ServerResponse<ProductDetail> getProductDetail(Integer productId);
+
 }

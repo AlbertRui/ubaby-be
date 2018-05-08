@@ -3,6 +3,7 @@ package com.ubaby.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.ubaby.common.Const;
 import com.ubaby.common.ResponseCode;
 import com.ubaby.common.ServerResponse;
 import com.ubaby.dao.CategoryMapper;
@@ -163,6 +164,27 @@ public class ProductServiceImpl implements ProductService {
         pageInfo.setList(productLists);
 
         return ServerResponse.createBySuccess(pageInfo);
+
+    }
+
+    /**
+     * 前台获取商品详细信息
+     *
+     * @param productId
+     * @return
+     */
+    @Override
+    public ServerResponse<ProductDetail> getProductDetail(Integer productId) {
+
+        if (productId == null)
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+
+        Product product = productMapper.selectByPrimaryKey(productId);
+        if (product == null || product.getStatus() != Const.ProductStatusEnum.ON_SALE.getCode())
+            return ServerResponse.createByErrorMessage("产品已下架或者删除");
+
+        ProductDetail productDetail = assembleProductDetail(product);
+        return ServerResponse.createBySuccess(productDetail);
 
     }
 
