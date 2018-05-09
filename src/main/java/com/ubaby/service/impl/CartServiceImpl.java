@@ -1,5 +1,6 @@
 package com.ubaby.service.impl;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.ubaby.common.Const;
 import com.ubaby.common.ResponseCode;
@@ -24,6 +25,7 @@ import java.util.List;
  * @author AlbertRui
  * @date 2018-05-09 18:04
  */
+@SuppressWarnings("JavaDoc")
 @Service("cartService")
 public class CartServiceImpl implements CartService {
 
@@ -33,6 +35,14 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private ProductMapper productMapper;
 
+    /**
+     * 向购物车中添加商品
+     *
+     * @param userId
+     * @param count
+     * @param productId
+     * @return
+     */
     public ServerResponse<CartVO> add(Integer userId, Integer count, Integer productId) {
 
         if (productId == null || count == null)
@@ -50,8 +60,65 @@ public class CartServiceImpl implements CartService {
             cart.setQuantity(cart.getQuantity() + count);
             cartMapper.updateByPrimaryKeySelective(cart);
         }
+
         return ServerResponse.createBySuccess(getCartVOLimit(userId));
 
+    }
+
+    /**
+     * 更新购物车
+     *
+     * @param userId
+     * @param count
+     * @param productId
+     * @return
+     */
+    @Override
+    public ServerResponse<CartVO> update(Integer userId, Integer count, Integer productId) {
+
+        if (productId == null || count == null)
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+
+        Cart cart = cartMapper.selectByUserIdProductId(userId, productId);
+        if (cart != null) {
+            cart.setQuantity(count);
+        }
+
+        cartMapper.updateByPrimaryKeySelective(cart);
+
+        return ServerResponse.createBySuccess(getCartVOLimit(userId));
+
+    }
+
+    /**
+     * 删除购物车中的商品
+     *
+     * @param userId
+     * @param productIds
+     * @return
+     */
+    @Override
+    public ServerResponse<CartVO> deleteProduct(Integer userId, String productIds) {
+
+        List<String> ids = Splitter.on(",").splitToList(productIds);
+        if (CollectionUtils.isEmpty(ids))
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+
+        cartMapper.deleteByUserIdAndProductIds(userId, ids);
+
+        return ServerResponse.createBySuccess(getCartVOLimit(userId));
+
+    }
+
+    /**
+     * 查询购物车
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public ServerResponse<CartVO> list(Integer userId) {
+        return ServerResponse.createBySuccess(getCartVOLimit(userId));
     }
 
     /*==================================private method================================*/

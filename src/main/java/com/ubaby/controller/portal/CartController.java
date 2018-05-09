@@ -9,6 +9,7 @@ import com.ubaby.vo.CartVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 
@@ -23,6 +24,8 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
+    @RequestMapping("add.do")
+    @ResponseBody
     public ServerResponse<CartVO> add(HttpSession session, Integer count, Integer productId) {
 
         User user = (User) session.getAttribute(Const.CURRENT_USER);
@@ -30,6 +33,42 @@ public class CartController {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
 
         return cartService.add(user.getId(), count, productId);
+
+    }
+
+    @RequestMapping("update.do")
+    @ResponseBody
+    public ServerResponse<CartVO> update(HttpSession session, Integer count, Integer productId) {
+
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null)
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
+
+        return cartService.update(user.getId(), count, productId);
+
+    }
+
+    @RequestMapping("delete.do")
+    @ResponseBody
+    public ServerResponse<CartVO> deleteProduct(HttpSession session, String productIds) {
+
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null)
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
+
+        return cartService.deleteProduct(user.getId(), productIds);
+
+    }
+
+    @RequestMapping("list.do")
+    @ResponseBody
+    public ServerResponse<CartVO> list(HttpSession session) {
+
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null)
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
+
+        return cartService.list(user.getId());
 
     }
 
