@@ -53,6 +53,6 @@ public interface CartService {
      * @param userId
      * @return
      */
-    ServerResponse<CartVO> selectOrUnSelect(Integer userId, Integer checked);
+    ServerResponse<CartVO> selectOrUnSelect(Integer userId, Integer productId, Integer checked);
 
 }

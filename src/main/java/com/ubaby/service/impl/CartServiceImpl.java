@@ -128,8 +128,8 @@ public class CartServiceImpl implements CartService {
      * @return
      */
     @Override
-    public ServerResponse<CartVO> selectOrUnSelect(Integer userId, Integer checked) {
-        cartMapper.checkedOrUnCheckedAllProduct(userId, checked);
+    public ServerResponse<CartVO> selectOrUnSelect(Integer userId, Integer productId, Integer checked) {
+        cartMapper.checkedOrUnCheckedProduct(userId, productId, checked);
         return list(userId);
     }
 
