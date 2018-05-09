@@ -36,6 +36,7 @@
     <select id="selectByNameAndId" resultMap="BaseResultMap" parameterType="map">
         SELECT
         <include refid="Base_Column_List"/>
+        FROM ubaby_product
         <where>
             <if test="productName != null">
                 AND name like #{productName}
@@ -48,6 +49,7 @@
     <select id="selectByNameAndCategoryIds" resultMap="BaseResultMap" parameterType="map">
         SELECT
         <include refid="Base_Column_List"/>
+        FROM ubaby_product
         WHERE status = 1
         <if test="productName != null">
             AND name like #{productName}
