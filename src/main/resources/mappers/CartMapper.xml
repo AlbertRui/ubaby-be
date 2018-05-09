@@ -39,7 +39,7 @@
         SELECT count(1)
         FROM ubaby_cart
         WHERE checked = 0
-        AND user_id = #{userId}
+              AND user_id = #{userId}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         DELETE FROM ubaby_cart
@@ -144,5 +144,11 @@
             create_time = #{createTime,jdbcType=TIMESTAMP},
             update_time = now()
         WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="checkedOrUnCheckedAllProduct" parameterType="map">
+        UPDATE ubaby_cart
+        SET checked     = #{checked},
+            update_time = now()
+        WHERE user_id = #{userId}
     </update>
 </mapper>

@@ -61,7 +61,7 @@ public class CartServiceImpl implements CartService {
             cartMapper.updateByPrimaryKeySelective(cart);
         }
 
-        return ServerResponse.createBySuccess(getCartVOLimit(userId));
+        return list(userId);
 
     }
 
@@ -86,7 +86,7 @@ public class CartServiceImpl implements CartService {
 
         cartMapper.updateByPrimaryKeySelective(cart);
 
-        return ServerResponse.createBySuccess(getCartVOLimit(userId));
+        return list(userId);
 
     }
 
@@ -106,7 +106,7 @@ public class CartServiceImpl implements CartService {
 
         cartMapper.deleteByUserIdAndProductIds(userId, ids);
 
-        return ServerResponse.createBySuccess(getCartVOLimit(userId));
+        return list(userId);
 
     }
 
@@ -119,6 +119,18 @@ public class CartServiceImpl implements CartService {
     @Override
     public ServerResponse<CartVO> list(Integer userId) {
         return ServerResponse.createBySuccess(getCartVOLimit(userId));
+    }
+
+    /**
+     * 全选或者全不选
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public ServerResponse<CartVO> selectOrUnSelect(Integer userId, Integer checked) {
+        cartMapper.checkedOrUnCheckedAllProduct(userId, checked);
+        return list(userId);
     }
 
     /*==================================private method================================*/

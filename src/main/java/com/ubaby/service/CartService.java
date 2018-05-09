@@ -47,4 +47,12 @@ public interface CartService {
      */
     ServerResponse<CartVO> list(Integer userId);
 
+    /**
+     * 全选或者全不选
+     *
+     * @param userId
+     * @return
+     */
+    ServerResponse<CartVO> selectOrUnSelect(Integer userId, Integer checked);
+
 }
