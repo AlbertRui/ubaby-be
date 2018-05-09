@@ -41,6 +41,11 @@
         WHERE checked = 0
               AND user_id = #{userId}
     </select>
+    <select id="selectCartProductCount" resultType="int" parameterType="int">
+        SELECT ifnull(sum(quantity), 0) AS count
+        FROM ubaby_cart
+        WHERE user_id = #{userId}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         DELETE FROM ubaby_cart
         WHERE id = #{id,jdbcType=INTEGER}

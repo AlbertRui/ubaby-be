@@ -55,4 +55,12 @@ public interface CartService {
      */
     ServerResponse<CartVO> selectOrUnSelect(Integer userId, Integer productId, Integer checked);
 
+    /**
+     * 获取购物车商品数量
+     *
+     * @param userId
+     * @return
+     */
+    ServerResponse<Integer> getCartProductCount(Integer userId);
+
 }

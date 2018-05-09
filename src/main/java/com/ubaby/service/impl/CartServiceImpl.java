@@ -133,6 +133,22 @@ public class CartServiceImpl implements CartService {
         return list(userId);
     }
 
+    /**
+     * 获取购物车商品数量
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public ServerResponse<Integer> getCartProductCount(Integer userId) {
+
+        if (userId == null)
+            return ServerResponse.createBySuccess(0);
+
+        return ServerResponse.createBySuccess(cartMapper.selectCartProductCount(userId));
+
+    }
+
     /*==================================private method================================*/
 
     private CartVO getCartVOLimit(Integer userId) {
