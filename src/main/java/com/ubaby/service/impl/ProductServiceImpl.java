@@ -10,6 +10,7 @@ import com.ubaby.dao.CategoryMapper;
 import com.ubaby.dao.ProductMapper;
 import com.ubaby.pojo.Category;
 import com.ubaby.pojo.Product;
+import com.ubaby.service.CategoryService;
 import com.ubaby.service.ProductService;
 import com.ubaby.util.DateTimeUtil;
 import com.ubaby.util.PropertiesUtil;
@@ -34,6 +35,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private CategoryMapper categoryMapper;
+
+    @Autowired
+    CategoryService categoryService;
 
     /**
      * 更新或新增产品
@@ -185,6 +189,58 @@ public class ProductServiceImpl implements ProductService {
 
         ProductDetail productDetail = assembleProductDetail(product);
         return ServerResponse.createBySuccess(productDetail);
+
+    }
+
+    /**
+     * 前台根据关键字和商品分类获取商品
+     *
+     * @param keyWord
+     * @param categoryId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public ServerResponse<PageInfo<ProductList>> getProductByKeyWordCategory(String keyWord, Integer categoryId, int pageNum, int pageSize, String orderBy) {
+
+        if (StringUtils.isBlank(keyWord) && categoryId == null)
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+
+        List<Integer> categoryIds = Lists.newArrayList();
+        if (categoryId != null) {
+            Category category = categoryMapper.selectByPrimaryKey(categoryId);
+            //如果分类为空，并且关键字为空，就返回一个空的结果集
+            if (category == null && StringUtils.isBlank(keyWord)) {
+                PageHelper.startPage(pageNum, pageSize);
+                List<ProductList> productLists = Lists.newArrayList();
+                PageInfo<ProductList> pageInfo = new PageInfo<>(productLists);
+                return ServerResponse.createBySuccess(pageInfo);
+            }
+            categoryIds = categoryService.getCategoryAndChildrenById(category.getId()).getData();
+        }
+
+        if (StringUtils.isNotBlank(keyWord))
+            keyWord = "%" + keyWord + "%";
+
+        PageHelper.startPage(pageNum, pageSize);
+        //排序处理
+        if (StringUtils.isNotBlank(orderBy)) {
+            if (Const.ProductListOrderBy.PRICE_ASC_DESC.contains(orderBy)) {
+                String[] orderBys = orderBy.split("_");
+                PageHelper.orderBy(orderBys[0] + " " + orderBys[1]);
+            }
+        }
+
+        List<Product> products = productMapper.selectByNameAndCategoryIds(StringUtils.isBlank(keyWord) ? null : keyWord, categoryIds.size() == 0 ? null : categoryIds);
+        List<ProductList> productLists = Lists.newArrayList();
+        for (Product product : products)
+            productLists.add(assembleProductList(product));
+
+        PageInfo<ProductList> pageInfo = new PageInfo(products);
+        pageInfo.setList(productLists);
+
+        return ServerResponse.createBySuccess(pageInfo);
 
     }
 

@@ -66,4 +66,15 @@ public interface ProductService {
      */
     ServerResponse<ProductDetail> getProductDetail(Integer productId);
 
+    /**
+     * 前台根据关键字和商品分类获取商品
+     *
+     * @param keyWord
+     * @param categoryId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    ServerResponse<PageInfo<ProductList>> getProductByKeyWordCategory(String keyWord, Integer categoryId, int pageNum, int pageSize, String orderBy);
+
 }
