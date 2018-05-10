@@ -31,7 +31,12 @@
         DELETE FROM ubaby_shipping
         WHERE id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.ubaby.pojo.Shipping">
+    <delete id="deleteByUserIdAndShippingId" parameterType="map">
+        DELETE FROM ubaby_shipping
+        WHERE id = #{shippingId}
+              AND user_id = #{userId}
+    </delete>
+    <insert id="insert" parameterType="com.ubaby.pojo.Shipping" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO ubaby_shipping (id, user_id, receiver_name,
                                     receiver_phone, receiver_mobile, receiver_province,
                                     receiver_city, receiver_district, receiver_address,
