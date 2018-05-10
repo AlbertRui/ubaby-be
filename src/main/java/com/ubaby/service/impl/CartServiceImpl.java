@@ -17,6 +17,7 @@ import com.ubaby.vo.CartVO;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -26,6 +27,7 @@ import java.util.List;
  * @date 2018-05-09 18:04
  */
 @SuppressWarnings("JavaDoc")
+@Transactional
 @Service("cartService")
 public class CartServiceImpl implements CartService {
 

@@ -10,6 +10,7 @@ import com.ubaby.util.MD5Util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -18,6 +19,7 @@ import java.util.UUID;
  * @date 2018-05-04 20:13
  */
 @SuppressWarnings("JavaDoc")
+@Transactional
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
@@ -201,7 +203,6 @@ public class UserServiceImpl implements UserService {
     /**
      * 获取用户详细信息
      *
-     * @param user
      * @return
      */
     @Override
