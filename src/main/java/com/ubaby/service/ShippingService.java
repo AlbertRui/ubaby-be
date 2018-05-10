@@ -38,4 +38,13 @@ public interface ShippingService {
      * @return
      */
     ServerResponse<String> update(Integer userId, Shipping shipping);
+
+    /**
+     * 查询收获地址
+     *
+     * @param userId
+     * @param shippingId
+     * @return
+     */
+    ServerResponse<Shipping> select(Integer userId, Integer shippingId);
 }

@@ -82,4 +82,22 @@ public class ShippingServiceImpl implements ShippingService {
 
     }
 
+    /**
+     * 查询收获地址
+     *
+     * @param userId
+     * @param shippingId
+     * @return
+     */
+    @Override
+    public ServerResponse<Shipping> select(Integer userId, Integer shippingId) {
+
+        Shipping shipping = shippingMapper.selectByUserIdAndShippingId(userId, shippingId);
+        if (shipping == null)
+            return ServerResponse.createByErrorMessage("无法查询到该地址");
+
+        return ServerResponse.createBySuccess("查询址成功", shipping);
+
+    }
+
 }

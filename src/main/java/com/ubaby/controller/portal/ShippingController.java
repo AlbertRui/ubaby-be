@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * @author AlbertRui
@@ -26,7 +27,7 @@ public class ShippingController {
 
     @RequestMapping("add.do")
     @ResponseBody
-    public ServerResponse add(HttpSession session, Shipping shipping) {
+    public ServerResponse<Map<String, Integer>> add(HttpSession session, Shipping shipping) {
 
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null)
@@ -38,7 +39,7 @@ public class ShippingController {
 
     @RequestMapping("delete.do")
     @ResponseBody
-    public ServerResponse delete(HttpSession session, Integer shippingId) {
+    public ServerResponse<String> delete(HttpSession session, Integer shippingId) {
 
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null)
@@ -50,13 +51,25 @@ public class ShippingController {
 
     @RequestMapping("update.do")
     @ResponseBody
-    public ServerResponse update(HttpSession session, Shipping shipping) {
+    public ServerResponse<String> update(HttpSession session, Shipping shipping) {
 
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null)
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
 
         return shippingService.update(user.getId(), shipping);
+
+    }
+
+    @RequestMapping("select.do")
+    @ResponseBody
+    public ServerResponse<Shipping> select(HttpSession session, Integer shippingId) {
+
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null)
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
+
+        return shippingService.select(user.getId(), shippingId);
 
     }
 

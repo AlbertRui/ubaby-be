@@ -27,6 +27,13 @@
         from ubaby_shipping
         where id = #{id,jdbcType=INTEGER}
     </select>
+    <select id="selectByUserIdAndShippingId" resultMap="BaseResultMap" parameterType="map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ubaby_shipping
+        WHERE id = #{shippingId}
+        AND user_id = #{userId}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         DELETE FROM ubaby_shipping
         WHERE id = #{id,jdbcType=INTEGER}
