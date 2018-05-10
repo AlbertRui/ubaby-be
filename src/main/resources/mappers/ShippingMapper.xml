@@ -183,4 +183,19 @@
             update_time       = now()
         WHERE id = #{id,jdbcType=INTEGER}
     </update>
+    <update id="updateByShipping" parameterType="com.ubaby.pojo.Shipping">
+        UPDATE ubaby_shipping
+        SET receiver_name     = #{receiverName,jdbcType=VARCHAR},
+            receiver_phone    = #{receiverPhone,jdbcType=VARCHAR},
+            receiver_mobile   = #{receiverMobile,jdbcType=VARCHAR},
+            receiver_province = #{receiverProvince,jdbcType=VARCHAR},
+            receiver_city     = #{receiverCity,jdbcType=VARCHAR},
+            receiver_district = #{receiverDistrict,jdbcType=VARCHAR},
+            receiver_address  = #{receiverAddress,jdbcType=VARCHAR},
+            receiver_zip      = #{receiverZip,jdbcType=VARCHAR},
+            create_time       = #{createTime,jdbcType=TIMESTAMP},
+            update_time       = now()
+        WHERE id = #{id,jdbcType=INTEGER}
+              AND user_id = #{userId,jdbcType=INTEGER}
+    </update>
 </mapper>

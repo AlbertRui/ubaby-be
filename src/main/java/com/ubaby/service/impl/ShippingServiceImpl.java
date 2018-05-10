@@ -38,7 +38,7 @@ public class ShippingServiceImpl implements ShippingService {
         if (rowCount > 0) {
             Map<String, Integer> result = Maps.newHashMap();
             result.put("shippingId", shipping.getId());
-            return ServerResponse.createBySuccess("新增地址成功",result);
+            return ServerResponse.createBySuccess("新增地址成功", result);
         }
 
         return ServerResponse.createByErrorMessage("新增地址失败");
@@ -60,6 +60,25 @@ public class ShippingServiceImpl implements ShippingService {
             return ServerResponse.createBySuccess("删除地址成功");
 
         return ServerResponse.createByErrorMessage("删除地址失败");
+
+    }
+
+    /**
+     * 更新地址
+     *
+     * @param userId
+     * @param shipping
+     * @return
+     */
+    @Override
+    public ServerResponse<String> update(Integer userId, Shipping shipping) {
+
+        shipping.setId(userId);
+        int resultCount = shippingMapper.updateByShipping(shipping);
+        if (resultCount > 0)
+            return ServerResponse.createBySuccess("更新地址成功");
+
+        return ServerResponse.createByErrorMessage("更新地址失败");
 
     }
 

@@ -30,4 +30,12 @@ public interface ShippingService {
      */
     ServerResponse<String> delete(Integer userId, Integer shippingId);
 
+    /**
+     * 更新地址
+     *
+     * @param userId
+     * @param shipping
+     * @return
+     */
+    ServerResponse<String> update(Integer userId, Shipping shipping);
 }
