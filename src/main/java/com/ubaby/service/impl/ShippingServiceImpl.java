@@ -1,5 +1,7 @@
 package com.ubaby.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import com.ubaby.common.ServerResponse;
 import com.ubaby.dao.ShippingMapper;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -98,6 +101,22 @@ public class ShippingServiceImpl implements ShippingService {
 
         return ServerResponse.createBySuccess("查询址成功", shipping);
 
+    }
+
+    /**
+     * 获取地址列表
+     *
+     * @param userId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public ServerResponse<PageInfo<Shipping>> list(Integer userId, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Shipping> shippings = shippingMapper.selectByUserId(userId);
+        PageInfo<Shipping> pageInfo = new PageInfo<>(shippings);
+        return ServerResponse.createBySuccess(pageInfo);
     }
 
 }
