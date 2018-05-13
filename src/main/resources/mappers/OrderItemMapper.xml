@@ -122,6 +122,18 @@
             </if>
         </trim>
     </insert>
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO ubaby_order_item (id, user_id, order_no,
+        product_id, product_name, product_image,
+        current_unit_price, quantity, total_price,
+        create_time, update_time)
+        VALUES
+        <foreach collection="orderItems" index="index" item="item" separator="," open="(" close=")">
+            #{item.id}, #{item.userId}, #{item.orderNo}, #{item.productId},
+            #{item.productName}, #{item.productImage}, #{item.currentUnitPrice},
+            #{item.quantity}, #{item.totalPrice}, now(), now()
+        </foreach>
+    </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.ubaby.pojo.OrderItem">
         update ubaby_order_item
         <set>

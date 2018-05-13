@@ -1,7 +1,9 @@
 package com.ubaby.service;
 
 import com.ubaby.common.ServerResponse;
+import com.ubaby.pojo.OrderItem;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,4 +39,13 @@ public interface OrderService {
      * @return
      */
     ServerResponse<Boolean> queryOrderPayStatus(Integer userId, Long orderNo);
+
+    /**
+     * 创建订单
+     *
+     * @param userId
+     * @param shippingId
+     * @return
+     */
+    ServerResponse create(Integer userId, Integer shippingId);
 }
