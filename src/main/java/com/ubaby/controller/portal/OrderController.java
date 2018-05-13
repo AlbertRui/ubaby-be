@@ -82,4 +82,20 @@ public class OrderController {
 
     }
 
+    @RequestMapping("query_order_pay_status.do")
+    @ResponseBody
+    public ServerResponse<Boolean> queryOrderPayStatus(HttpSession session, Long orderNo) {
+
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null)
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
+
+        ServerResponse<Boolean> response = orderService.queryOrderPayStatus(user.getId(), orderNo);
+        if (response.isSuccess())
+            return ServerResponse.createBySuccess(true);
+
+        return ServerResponse.createBySuccess(false);
+
+    }
+
 }

@@ -28,4 +28,13 @@ public interface OrderService {
      * @return
      */
     ServerResponse<String> alipayCallBack(Map<String, String> params);
+
+    /**
+     * 查询订单状态
+     *
+     * @param userId
+     * @param orderNo
+     * @return
+     */
+    ServerResponse<Boolean> queryOrderPayStatus(Integer userId, Long orderNo);
 }

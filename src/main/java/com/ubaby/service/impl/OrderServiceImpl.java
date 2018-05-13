@@ -186,6 +186,12 @@ public class OrderServiceImpl implements OrderService {
         return ServerResponse.createByErrorMessage("支付宝预下单失败！！！");
     }
 
+    /**
+     * 支付宝回调
+     *
+     * @param params
+     * @return
+     */
     @Override
     public ServerResponse<String> alipayCallBack(Map<String, String> params) {
 
@@ -214,6 +220,28 @@ public class OrderServiceImpl implements OrderService {
 
         payInfoMapper.insert(payInfo);
         return ServerResponse.createBySuccess();
+
+    }
+
+    /**
+     * 查询订单状态
+     *
+     * @param userId
+     * @param orderNo
+     * @return
+     */
+    @Override
+    public ServerResponse<Boolean> queryOrderPayStatus(Integer userId, Long orderNo) {
+
+        Order order = orderMapper.selectByUserIdAndOrderNo(userId, orderNo);
+        if (order == null)
+            return ServerResponse.createByErrorMessage("用户没有该订单");
+
+        if (order.getStatus() >= Const.OrderStatusEnum.PAID.getCode())
+            return ServerResponse.createBySuccess();
+
+        return ServerResponse.createByError();
+
     }
 
     //=========================private method==============================//
