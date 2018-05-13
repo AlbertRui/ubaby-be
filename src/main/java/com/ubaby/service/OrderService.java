@@ -12,7 +12,7 @@ import java.util.Map;
 public interface OrderService {
 
     /**
-     * 订单操作
+     * 支付操作
      *
      * @param orderNo
      * @param userId
@@ -20,4 +20,12 @@ public interface OrderService {
      * @return
      */
     ServerResponse<Map<String, String>> pay(Long orderNo, Integer userId, String path);
+
+    /**
+     * 支付宝回调
+     *
+     * @param params
+     * @return
+     */
+    ServerResponse<String> alipayCallBack(Map<String, String> params);
 }

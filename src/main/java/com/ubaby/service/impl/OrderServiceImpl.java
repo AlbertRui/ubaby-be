@@ -12,13 +12,17 @@ import com.alipay.demo.trade.service.impl.AlipayTradeServiceImpl;
 import com.alipay.demo.trade.utils.ZxingUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.ubaby.common.Const;
 import com.ubaby.common.ServerResponse;
 import com.ubaby.dao.OrderItemMapper;
 import com.ubaby.dao.OrderMapper;
+import com.ubaby.dao.PayInfoMapper;
 import com.ubaby.pojo.Order;
 import com.ubaby.pojo.OrderItem;
+import com.ubaby.pojo.PayInfo;
 import com.ubaby.service.OrderService;
 import com.ubaby.util.BigDecimalUtil;
+import com.ubaby.util.DateTimeUtil;
 import com.ubaby.util.FTPUtil;
 import com.ubaby.util.PropertiesUtil;
 import org.apache.commons.lang.StringUtils;
@@ -45,14 +49,31 @@ public class OrderServiceImpl implements OrderService {
 
     private Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
+    private static AlipayTradeService tradeService;
+
+    static {
+        /* 一定要在创建AlipayTradeService之前调用Configs.init()设置默认参数
+           Configs会读取classpath下的zfbinfo.properties文件配置信息，如果找不到该文件则确认该文件是否在classpath目录
+         */
+        Configs.init("zfbinfo.properties");
+
+        /* 使用Configs提供的默认参数
+           AlipayTradeService可以使用单例或者为静态成员对象，不需要反复new
+         */
+        tradeService = new AlipayTradeServiceImpl.ClientBuilder().build();
+    }
+
     @Autowired
     private OrderMapper orderMapper;
 
     @Autowired
     private OrderItemMapper orderItemMapper;
 
+    @Autowired
+    private PayInfoMapper payInfoMapper;
+
     /**
-     * 订单操作
+     * 支付操作
      *
      * @param orderNo
      * @param userId
@@ -122,15 +143,6 @@ public class OrderServiceImpl implements OrderService {
                 .setNotifyUrl(PropertiesUtil.getProperty("alipay.callback.url"))//支付宝服务器主动通知商户服务器里指定的页面http路径,根据需要设置
                 .setGoodsDetailList(goodsDetailList);
 
-        /* 一定要在创建AlipayTradeService之前调用Configs.init()设置默认参数
-           Configs会读取classpath下的zfbinfo.properties文件配置信息，如果找不到该文件则确认该文件是否在classpath目录
-         */
-        Configs.init("zfbinfo.properties");
-
-        /* 使用Configs提供的默认参数
-           AlipayTradeService可以使用单例或者为静态成员对象，不需要反复new
-         */
-        AlipayTradeService tradeService = new AlipayTradeServiceImpl.ClientBuilder().build();
         AlipayF2FPrecreateResult result = tradeService.tradePrecreate(builder);
         switch (result.getTradeStatus()) {
             case SUCCESS:
@@ -147,7 +159,7 @@ public class OrderServiceImpl implements OrderService {
 
                 // 需要修改为运行机器上的路径
                 String qrPath = String.format(path + "/qr-%s.png", response.getOutTradeNo());
-                String qrFileName = String.format("qr-%s.png",response.getOutTradeNo());
+                String qrFileName = String.format("qr-%s.png", response.getOutTradeNo());
                 ZxingUtils.getQRCodeImge(response.getQrCode(), 256, qrPath);
                 File targetFile = new File(path, qrFileName);
                 try {
@@ -172,6 +184,36 @@ public class OrderServiceImpl implements OrderService {
                 break;
         }
         return ServerResponse.createByErrorMessage("支付宝预下单失败！！！");
+    }
+
+    @Override
+    public ServerResponse<String> alipayCallBack(Map<String, String> params) {
+
+        Long orderNo = Long.valueOf(params.get("out_trade_no"));
+        String tradeNo = params.get("trade_no");
+        String tradeStatus = params.get("trade_status");
+        Order order = orderMapper.selectByOrderNo(orderNo);
+        if (order == null)
+            return ServerResponse.createByErrorMessage("非ubaby网上商城的订单，回调忽略");
+
+        if (order.getStatus() >= Const.OrderStatusEnum.PAID.getCode())
+            return ServerResponse.createBySuccess("支付宝重复回调");
+
+        if (Const.AlipayCallback.TRADE_STATUS_TRADE_SUCCESS.equals(tradeStatus)) {
+            order.setPaymentTime(DateTimeUtil.strToDate(params.get("gmt_payment")));
+            order.setStatus(Const.OrderStatusEnum.PAID.getCode());
+            orderMapper.updateByPrimaryKeySelective(order);
+        }
+
+        PayInfo payInfo = new PayInfo();
+        payInfo.setUserId(order.getUserId());
+        payInfo.setOrderNo(order.getOrderNo());
+        payInfo.setPayPlatform(Const.PayPlatformEnum.ALIPAY.getCode());
+        payInfo.setPlatformNumber(tradeNo);
+        payInfo.setPlatformStatus(tradeStatus);
+
+        payInfoMapper.insert(payInfo);
+        return ServerResponse.createBySuccess();
     }
 
     //=========================private method==============================//
