@@ -114,4 +114,12 @@ public interface OrderService {
      * @return
      */
     ServerResponse<PageInfo<OrderVO>> manageSearch(Long orderNo, int pageNum, int pageSize);
+
+    /**
+     * 后台管理员发货
+     *
+     * @param orderNo
+     * @return
+     */
+    ServerResponse<String> manageSendGoods(Long orderNo);
 }

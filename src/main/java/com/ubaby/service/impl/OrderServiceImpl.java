@@ -49,6 +49,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -474,6 +475,31 @@ public class OrderServiceImpl implements OrderService {
             PageInfo<OrderVO> pageInfo = new PageInfo(Lists.<Order>newArrayList());
             pageInfo.setList(Lists.newArrayList(orderVO));
             return ServerResponse.createBySuccess(pageInfo);
+        }
+
+        return ServerResponse.createByErrorMessage("订单不存在");
+
+    }
+
+    /**
+     * 后台管理员发货
+     *
+     * @param orderNo
+     * @return
+     */
+    @Override
+    public ServerResponse<String> manageSendGoods(Long orderNo) {
+
+        Order order = orderMapper.selectByOrderNo(orderNo);
+        if (order != null && order.getStatus() == Const.OrderStatusEnum.PAID.getCode()) {
+
+            order.setStatus(Const.OrderStatusEnum.SHIPPED.getCode());
+            order.setSendTime(new Date());
+
+            orderMapper.updateByPrimaryKeySelective(order);
+
+            return ServerResponse.createBySuccess("发货成功");
+
         }
 
         return ServerResponse.createByErrorMessage("订单不存在");
