@@ -10,6 +10,8 @@ import com.alipay.demo.trade.model.result.AlipayF2FPrecreateResult;
 import com.alipay.demo.trade.service.AlipayTradeService;
 import com.alipay.demo.trade.service.impl.AlipayTradeServiceImpl;
 import com.alipay.demo.trade.utils.ZxingUtils;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.ubaby.common.Const;
@@ -388,7 +390,42 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    /**
+     * 个人中心查看订单
+     *
+     * @param userId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public ServerResponse<PageInfo<OrderVO>> getOrderList(Integer userId, int pageNum, int pageSize) {
+
+        PageHelper.startPage(pageNum, pageSize);
+        List<Order> orders = orderMapper.selectOrderListByUserId(userId);
+        List<OrderVO> orderVOS = assembleOrderVOList(userId, orders);
+
+        PageInfo<OrderVO> pageResult = new PageInfo(orders);
+        pageResult.setList(orderVOS);
+
+        return ServerResponse.createBySuccess(pageResult);
+
+    }
+
     //=========================private method==============================//
+
+    private List<OrderVO> assembleOrderVOList(Integer userId, List<Order> orders) {
+
+        List<OrderVO> orderVOS = Lists.newArrayList();
+        for (Order order : orders) {
+            List<OrderItem> orderItems = orderItemMapper.selectByOrderNoAndUserId(order.getOrderNo(), userId);
+            OrderVO orderVO = assembleOrderVO(order, orderItems);
+            orderVOS.add(orderVO);
+        }
+
+        return orderVOS;
+
+    }
 
     //组装orderVO
     private OrderVO assembleOrderVO(Order order, List<OrderItem> orderItems) {

@@ -1,5 +1,6 @@
 package com.ubaby.service;
 
+import com.github.pagehelper.PageInfo;
 import com.ubaby.common.ServerResponse;
 import com.ubaby.pojo.OrderItem;
 import com.ubaby.vo.OrderProduct;
@@ -77,4 +78,13 @@ public interface OrderService {
      */
     ServerResponse<OrderVO> getOrderDetail(Integer userId, Long orderNo);
 
+    /**
+     * 个人中心查看订单
+     *
+     * @param userId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    ServerResponse<PageInfo<OrderVO>> getOrderList(Integer userId, int pageNum, int pageSize);
 }
