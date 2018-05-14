@@ -45,4 +45,19 @@ public class OrderManageController {
 
     }
 
+    @RequestMapping("detail.do")
+    @ResponseBody
+    public ServerResponse<OrderVO> orderDetail(HttpSession session, Long orderNo) {
+
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null)
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
+
+        if (userService.checkAdminRole(user).isSuccess())
+            return orderService.manageDetail(orderNo);
+
+        return ServerResponse.createByErrorMessage("无权限操作，需要管理员权限");
+
+    }
+
 }

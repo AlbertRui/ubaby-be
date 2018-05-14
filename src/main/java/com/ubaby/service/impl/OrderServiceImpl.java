@@ -435,6 +435,26 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    /**
+     * 管理员查看订单详情
+     *
+     * @param orderNo
+     * @return
+     */
+    @Override
+    public ServerResponse<OrderVO> manageDetail(Long orderNo) {
+
+        Order order = orderMapper.selectByOrderNo(orderNo);
+        if (order != null) {
+            List<OrderItem> orderItems = orderItemMapper.selectByOrderNo(orderNo);
+            OrderVO orderVO = assembleOrderVO(order, orderItems);
+            return ServerResponse.createBySuccess(orderVO);
+        }
+
+        return ServerResponse.createByErrorMessage("订单不存在");
+
+    }
+
     //=========================private method==============================//
 
     private List<OrderVO> assembleOrderVOList(Integer userId, List<Order> orders) {

@@ -96,4 +96,12 @@ public interface OrderService {
      * @return
      */
     ServerResponse<PageInfo<OrderVO>> manageList(int pageNum, int pageSize);
+
+    /**
+     * 管理员查看订单详情
+     *
+     * @param orderNo
+     * @return
+     */
+    ServerResponse<OrderVO> manageDetail(Long orderNo);
 }
