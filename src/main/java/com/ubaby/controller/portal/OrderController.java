@@ -110,4 +110,16 @@ public class OrderController {
 
     }
 
+    @RequestMapping("cancel.do")
+    @ResponseBody
+    public ServerResponse<String> cancel(HttpSession session, Long orderNo) {
+
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null)
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
+
+        return  orderService.cancel(user.getId(), orderNo);
+
+    }
+
 }

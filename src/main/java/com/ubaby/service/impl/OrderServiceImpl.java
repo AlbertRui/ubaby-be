@@ -305,6 +305,34 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    /**
+     * 删除订单
+     *
+     * @param userId
+     * @param orderNo
+     * @return
+     */
+    @Override
+    public ServerResponse<String> cancel(Integer userId, Long orderNo) {
+
+        Order order = orderMapper.selectByUserIdAndOrderNo(userId, orderNo);
+        if (order == null)
+            return ServerResponse.createByErrorMessage("该用户订单不存在");
+
+        if (order.getStatus() != Const.OrderStatusEnum.NO_PAY.getCode())
+            return ServerResponse.createByErrorMessage("已付款，无法取消订单");
+
+        Order updateOrder = new Order();
+        updateOrder.setId(order.getId());
+        updateOrder.setStatus(Const.OrderStatusEnum.CANCELED.getCode());
+
+        int rowCount = orderMapper.updateByPrimaryKeySelective(updateOrder);
+        if (rowCount > 0) return ServerResponse.createBySuccess();
+
+        return ServerResponse.createByError();
+
+    }
+
     //=========================private method==============================//
 
     //组装orderVO
@@ -345,7 +373,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     //组装OrderItemVO对象
-    private OrderItemVO assembleOrderItemVO(OrderItem orderItem){
+    private OrderItemVO assembleOrderItemVO(OrderItem orderItem) {
         OrderItemVO orderItemVO = new OrderItemVO();
         orderItemVO.setOrderNo(orderItem.getOrderNo());
         orderItemVO.setProductId(orderItem.getProductId());

@@ -48,4 +48,13 @@ public interface OrderService {
      * @return
      */
     ServerResponse create(Integer userId, Integer shippingId);
+
+    /**
+     * 删除订单
+     *
+     * @param userId
+     * @param orderNo
+     * @return
+     */
+    ServerResponse<String> cancel(Integer userId, Long orderNo);
 }
