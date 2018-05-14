@@ -2,6 +2,7 @@ package com.ubaby.service;
 
 import com.ubaby.common.ServerResponse;
 import com.ubaby.pojo.OrderItem;
+import com.ubaby.vo.OrderProduct;
 
 import java.util.List;
 import java.util.Map;
@@ -57,4 +58,12 @@ public interface OrderService {
      * @return
      */
     ServerResponse<String> cancel(Integer userId, Long orderNo);
+
+    /**
+     * 获取购物车中已经选中的商品
+     *
+     * @param userId
+     * @return
+     */
+    ServerResponse getOrderCartProduct(Integer userId);
 }

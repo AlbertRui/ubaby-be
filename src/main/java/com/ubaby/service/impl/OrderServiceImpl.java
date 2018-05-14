@@ -32,6 +32,7 @@ import com.ubaby.util.DateTimeUtil;
 import com.ubaby.util.FTPUtil;
 import com.ubaby.util.PropertiesUtil;
 import com.ubaby.vo.OrderItemVO;
+import com.ubaby.vo.OrderProduct;
 import com.ubaby.vo.OrderVO;
 import com.ubaby.vo.ShippingVO;
 import org.apache.commons.collections.CollectionUtils;
@@ -330,6 +331,39 @@ public class OrderServiceImpl implements OrderService {
         if (rowCount > 0) return ServerResponse.createBySuccess();
 
         return ServerResponse.createByError();
+
+    }
+
+    /**
+     * 获取购物车中已经选中的商品
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public ServerResponse getOrderCartProduct(Integer userId) {
+
+        OrderProduct orderProduct = new OrderProduct();
+        //从购物车中获取数据
+        List<Cart> carts = cartMapper.selectCheckedCartByUserId(userId);
+        ServerResponse<List<OrderItem>> serverResponse = getCartOrderItem(userId, carts);
+        if (!serverResponse.isSuccess())
+            return serverResponse;
+
+        List<OrderItem> orderItems = serverResponse.getData();
+        List<OrderItemVO> orderItemVOS = Lists.newArrayList();
+
+        BigDecimal payment = new BigDecimal("0");
+        for (OrderItem orderItem : orderItems) {
+            payment = BigDecimalUtil.add(payment.doubleValue(), orderItem.getTotalPrice().doubleValue());
+            orderItemVOS.add(assembleOrderItemVO(orderItem));
+        }
+
+        orderProduct.setProductTotalPrice(payment);
+        orderProduct.setOrderItemVOS(orderItemVOS);
+        orderProduct.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
+
+        return ServerResponse.createBySuccess(orderItemVOS);
 
     }
 
