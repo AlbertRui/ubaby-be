@@ -455,6 +455,31 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    /**
+     * 后台管理员按订单号搜索
+     *
+     * @param orderNo
+     * @return
+     */
+    @Override
+    public ServerResponse<PageInfo<OrderVO>> manageSearch(Long orderNo, int pageNum, int pageSize) {
+
+        PageHelper.startPage(pageNum, pageSize);
+
+        Order order = orderMapper.selectByOrderNo(orderNo);
+        if (order != null) {
+            List<OrderItem> orderItems = orderItemMapper.selectByOrderNo(orderNo);
+            OrderVO orderVO = assembleOrderVO(order, orderItems);
+
+            PageInfo<OrderVO> pageInfo = new PageInfo(Lists.<Order>newArrayList());
+            pageInfo.setList(Lists.newArrayList(orderVO));
+            return ServerResponse.createBySuccess(pageInfo);
+        }
+
+        return ServerResponse.createByErrorMessage("订单不存在");
+
+    }
+
     //=========================private method==============================//
 
     private List<OrderVO> assembleOrderVOList(Integer userId, List<Order> orders) {

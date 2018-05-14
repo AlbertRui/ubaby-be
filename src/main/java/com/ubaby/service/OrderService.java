@@ -104,4 +104,14 @@ public interface OrderService {
      * @return
      */
     ServerResponse<OrderVO> manageDetail(Long orderNo);
+
+    /**
+     * 后台管理员按订单号搜索
+     *
+     * @param orderNo
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    ServerResponse<PageInfo<OrderVO>> manageSearch(Long orderNo, int pageNum, int pageSize);
 }
