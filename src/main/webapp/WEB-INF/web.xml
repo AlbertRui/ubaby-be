@@ -32,9 +32,9 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
-    <!--<listener>-->
-        <!--<listener-class>com.ubaby.common.listener.JdbcDriverListener</listener-class>-->
-    <!--</listener>-->
+    <listener>
+        <listener-class>com.ubaby.common.MySpecialListener</listener-class>
+    </listener>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>

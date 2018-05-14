@@ -1,6 +1,5 @@
 package com.ubaby.dao;
 
-import com.ubaby.pojo.Cart;
 import com.ubaby.pojo.Order;
 import org.apache.ibatis.annotations.Param;
 
