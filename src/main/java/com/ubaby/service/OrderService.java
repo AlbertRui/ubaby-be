@@ -3,6 +3,7 @@ package com.ubaby.service;
 import com.ubaby.common.ServerResponse;
 import com.ubaby.pojo.OrderItem;
 import com.ubaby.vo.OrderProduct;
+import com.ubaby.vo.OrderVO;
 
 import java.util.List;
 import java.util.Map;
@@ -66,4 +67,14 @@ public interface OrderService {
      * @return
      */
     ServerResponse getOrderCartProduct(Integer userId);
+
+    /**
+     * 获取订单详情
+     *
+     * @param userId
+     * @param orderNo
+     * @return
+     */
+    ServerResponse<OrderVO> getOrderDetail(Integer userId, Long orderNo);
+
 }
