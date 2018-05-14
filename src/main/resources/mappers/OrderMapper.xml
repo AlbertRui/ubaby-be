@@ -49,6 +49,12 @@
         WHERE user_id = #{userId}
         ORDER BY create_time DESC
     </select>
+    <select id="selectAllOrder" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ubaby_order
+        ORDER BY create_time DESC
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         DELETE FROM ubaby_order
         WHERE id = #{id,jdbcType=INTEGER}

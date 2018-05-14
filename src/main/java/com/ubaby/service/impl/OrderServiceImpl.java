@@ -412,13 +412,41 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    //=========================backend=====================================//
+
+    /**
+     * 管理员查看订单
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public ServerResponse<PageInfo<OrderVO>> manageList(int pageNum, int pageSize) {
+
+        PageHelper.startPage(pageNum, pageSize);
+        List<Order> orders = orderMapper.selectAllOrder();
+        List<OrderVO> orderVOS = assembleOrderVOList(null, orders);
+
+        PageInfo<OrderVO> pageResult = new PageInfo(orders);
+        pageResult.setList(orderVOS);
+
+        return ServerResponse.createBySuccess(pageResult);
+
+    }
+
     //=========================private method==============================//
 
     private List<OrderVO> assembleOrderVOList(Integer userId, List<Order> orders) {
 
         List<OrderVO> orderVOS = Lists.newArrayList();
+        List<OrderItem> orderItems;
         for (Order order : orders) {
-            List<OrderItem> orderItems = orderItemMapper.selectByOrderNoAndUserId(order.getOrderNo(), userId);
+            if (userId == null) {
+                orderItems = orderItemMapper.selectByOrderNo(order.getOrderNo());
+            } else {
+                orderItems = orderItemMapper.selectByOrderNoAndUserId(order.getOrderNo(), userId);
+            }
             OrderVO orderVO = assembleOrderVO(order, orderItems);
             orderVOS.add(orderVO);
         }

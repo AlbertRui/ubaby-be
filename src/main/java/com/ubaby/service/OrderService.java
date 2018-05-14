@@ -87,4 +87,13 @@ public interface OrderService {
      * @return
      */
     ServerResponse<PageInfo<OrderVO>> getOrderList(Integer userId, int pageNum, int pageSize);
+
+    /**
+     * 管理员查看订单
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    ServerResponse<PageInfo<OrderVO>> manageList(int pageNum, int pageSize);
 }
