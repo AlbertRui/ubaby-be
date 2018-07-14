@@ -262,7 +262,7 @@ public class ProductServiceImpl implements ProductService {
         productDetail.setStatus(product.getStatus());
         productDetail.setPrice(product.getPrice());
 
-        productDetail.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.happymmall.com/"));
+        productDetail.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.ubaby.rzhang.xin/"));
 
         Category category = categoryMapper.selectByPrimaryKey(product.getCategoryId());
         if (category == null)
@@ -282,7 +282,7 @@ public class ProductServiceImpl implements ProductService {
         ProductList productList = new ProductList();
         productList.setId(product.getId());
         productList.setCategoryId(product.getCategoryId());
-        productList.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.happymmall.com/"));
+        productList.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.ubaby.rzhang.xin/"));
         productList.setMainImage(product.getMainImage());
         productList.setName(product.getName());
         productList.setPrice(product.getPrice());
