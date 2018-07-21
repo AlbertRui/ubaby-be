@@ -116,7 +116,7 @@ public class ProductManageController {
 
     }
 
-    @RequestMapping(value = "upload.do", consumes = "multipart/form-data")
+    @RequestMapping("upload.do")
     @ResponseBody
     public ServerResponse upload(HttpSession session, @RequestParam(value = "uploadFile", required = false) MultipartFile file, HttpServletRequest request) {
 
