@@ -10,8 +10,8 @@
 </form>
 
 <h1>富文本上传</h1>
-<form method="post" action="${pageContext.request.contextPath}/manage/product/upload.do" name="form1" enctype="multipart/form-data">
-    <input type="file" name="richTextUpload"/>
+<form method="post" action="${pageContext.request.contextPath}/manage/product/rich_text_upload.do" name="form1" enctype="multipart/form-data">
+    <input type="file" name="uploadFile"/>
     <input type="submit" value="富文本上传"/>
 </form>
 

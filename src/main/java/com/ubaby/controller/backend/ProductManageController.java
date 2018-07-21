@@ -152,7 +152,7 @@ public class ProductManageController {
      */
     @RequestMapping("rich_text_upload.do")
     @ResponseBody
-    public Map<String, Object> richTextUpload(HttpSession session, @RequestParam(value = "richTextUpload", required = false) MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
+    public Map<String, Object> richTextUpload(HttpSession session, @RequestParam(value = "uploadFile", required = false) MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
 
         Map<String, Object> resultMap = Maps.newHashMap();
         User user = (User) session.getAttribute(Const.CURRENT_USER);
