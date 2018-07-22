@@ -50,10 +50,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ServerResponse<String> saveOrUpdateProduct(Product product) {
 
-        if (product != null && StringUtils.isNotBlank(product.getSubImages())) {
-            String[] subImages = product.getSubImages().split(",");
-            if (subImages.length > 0)
-                product.setMainImage(subImages[0]);
+        if (product != null && StringUtils.isNotBlank(product.getsubImage())) {
+            String[] subImage = product.getsubImage().split(",");
+            if (subImage.length > 0)
+                product.setMainImage(subImage[0]);
 
             int rowCount;
             if (product.getId() != null) {
@@ -255,7 +255,7 @@ public class ProductServiceImpl implements ProductService {
         productDetail.setCategoryId(product.getCategoryId());
         productDetail.setName(product.getName());
         productDetail.setSubTitle(product.getSubtitle());
-        productDetail.setSubImage(product.getSubImages());
+        productDetail.setSubImage(product.getsubImage());
         productDetail.setMainImage(product.getMainImage());
         productDetail.setDetail(product.getDetail());
         productDetail.setStock(product.getStock());
