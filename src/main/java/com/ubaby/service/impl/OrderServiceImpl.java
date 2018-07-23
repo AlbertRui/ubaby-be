@@ -557,7 +557,7 @@ public class OrderServiceImpl implements OrderService {
         for (OrderItem orderItem : orderItems)
             orderItemVOS.add(assembleOrderItemVO(orderItem));
 
-        orderVO.setOrderItemVoList(orderItemVOS);
+        orderVO.setorderItemVoList(orderItemVOS);
 
         return orderVO;
 

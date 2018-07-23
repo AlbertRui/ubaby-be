@@ -35,7 +35,7 @@ public class OrderVO {
     private String createTime;
 
     //订单的明细
-    private List<OrderItemVO> orderItemVOList;
+    private List<OrderItemVO> orderItemVoList;
 
     private String imageHost;
 
@@ -141,12 +141,12 @@ public class OrderVO {
         this.createTime = createTime;
     }
 
-    public List<OrderItemVO> getOrderItemVoList() {
-        return orderItemVOList;
+    public List<OrderItemVO> getorderItemVoList() {
+        return orderItemVoList;
     }
 
-    public void setOrderItemVoList(List<OrderItemVO> orderItemVoList) {
-        this.orderItemVOList = orderItemVoList;
+    public void setorderItemVoList(List<OrderItemVO> orderItemVoList) {
+        this.orderItemVoList = orderItemVoList;
     }
 
     public String getImageHost() {
