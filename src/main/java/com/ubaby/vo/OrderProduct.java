@@ -11,18 +11,18 @@ import java.util.List;
  */
 public class OrderProduct {
 
-    private List<OrderItemVO> orderItemVOS;
+    private List<OrderItemVO> orderItemVoList;
 
     private BigDecimal productTotalPrice;
 
     private String imageHost;
 
-    public List<OrderItemVO> getOrderItemVOS() {
-        return orderItemVOS;
+    public List<OrderItemVO> getorderItemVoList() {
+        return orderItemVoList;
     }
 
-    public void setOrderItemVOS(List<OrderItemVO> orderItemVOS) {
-        this.orderItemVOS = orderItemVOS;
+    public void setorderItemVoList(List<OrderItemVO> orderItemVoList) {
+        this.orderItemVoList = orderItemVoList;
     }
 
     public BigDecimal getProductTotalPrice() {

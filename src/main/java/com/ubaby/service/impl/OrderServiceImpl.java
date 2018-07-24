@@ -354,16 +354,16 @@ public class OrderServiceImpl implements OrderService {
             return serverResponse;
 
         List<OrderItem> orderItems = serverResponse.getData();
-        List<OrderItemVO> orderItemVOS = Lists.newArrayList();
+        List<OrderItemVO> orderItemVoList = Lists.newArrayList();
 
         BigDecimal payment = new BigDecimal("0");
         for (OrderItem orderItem : orderItems) {
             payment = BigDecimalUtil.add(payment.doubleValue(), orderItem.getTotalPrice().doubleValue());
-            orderItemVOS.add(assembleOrderItemVO(orderItem));
+            orderItemVoList.add(assembleOrderItemVO(orderItem));
         }
 
         orderProduct.setProductTotalPrice(payment);
-        orderProduct.setOrderItemVOS(orderItemVOS);
+        orderProduct.setorderItemVoList(orderItemVoList);
         orderProduct.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
 
         return ServerResponse.createBySuccess(orderProduct);
@@ -553,11 +553,11 @@ public class OrderServiceImpl implements OrderService {
 
         orderVO.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
 
-        List<OrderItemVO> orderItemVOS = Lists.newArrayList();
+        List<OrderItemVO> orderItemVoList = Lists.newArrayList();
         for (OrderItem orderItem : orderItems)
-            orderItemVOS.add(assembleOrderItemVO(orderItem));
+            orderItemVoList.add(assembleOrderItemVO(orderItem));
 
-        orderVO.setorderItemVoList(orderItemVOS);
+        orderVO.setorderItemVoList(orderItemVoList);
 
         return orderVO;
 
