@@ -76,7 +76,7 @@ public class ShippingServiceImpl implements ShippingService {
     @Override
     public ServerResponse<String> update(Integer userId, Shipping shipping) {
 
-        shipping.setId(userId);
+        shipping.setUserId(userId);
         int resultCount = shippingMapper.updateByShipping(shipping);
         if (resultCount > 0)
             return ServerResponse.createBySuccess("更新地址成功");
