@@ -36,7 +36,7 @@ public class ShippingServiceImpl implements ShippingService {
     @Override
     public ServerResponse<Map<String, Integer>> add(Integer userId, Shipping shipping) {
 
-        shipping.setId(userId);
+        shipping.setUserId(userId);
         int rowCount = shippingMapper.insert(shipping);
         if (rowCount > 0) {
             Map<String, Integer> result = Maps.newHashMap();

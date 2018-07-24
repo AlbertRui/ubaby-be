@@ -50,12 +50,12 @@
               AND user_id = #{userId}
     </delete>
     <insert id="insert" parameterType="com.ubaby.pojo.Shipping" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO ubaby_shipping (user_id, receiver_name,
+        INSERT INTO ubaby_shipping (id, user_id, receiver_name,
                                     receiver_phone, receiver_mobile, receiver_province,
                                     receiver_city, receiver_district, receiver_address,
                                     receiver_zip, create_time, update_time
         )
-        VALUES (#{userId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR},
+        VALUES (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR},
                                         #{receiverPhone,jdbcType=VARCHAR}, #{receiverMobile,jdbcType=VARCHAR},
                                         #{receiverProvince,jdbcType=VARCHAR},
                                         #{receiverCity,jdbcType=VARCHAR}, #{receiverDistrict,jdbcType=VARCHAR},
