@@ -366,7 +366,7 @@ public class OrderServiceImpl implements OrderService {
         orderProduct.setOrderItemVOS(orderItemVOS);
         orderProduct.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
 
-        return ServerResponse.createBySuccess(orderItemVOS);
+        return ServerResponse.createBySuccess(orderProduct);
 
     }
 
