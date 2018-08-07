@@ -1,6 +1,9 @@
 Java 企业级电商-服务端项目
 =====================
-[点此](http://ubaby.rzhang.xin)预览项目最终上线效果
+* [点击](http://ubaby.rzhang.xin)预览项目最终上线效果
+* [点击](http://admin.ubaby.rzhang.xin)预览后台管理上线效果
+* [点击](http://github.com/albertrui/ubaby-fe)访问商城前端项目
+* [点击](http://github.com/albertrui/admin-fe)访问后台管理前端项目
 ## 项目简介
   >> 整合SSM框架（Spring+SpringMVC+Mybatis），采用前后端分离的架构方式开发的仿天猫在线电商平台项目，现为本项目的服务器端实现。通过完成本项目，掌握了如下技能：
 * 首先，当然是java web开发，包括javaEE的核心技术的实际应用；
