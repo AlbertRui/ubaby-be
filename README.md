@@ -33,3 +33,23 @@ Java 企业级电商-服务端项目
 * 收货地址模块
 * 商品模块
 * 订单模块
+## 分散技术点总结
+* 高可用的响应对象ServerResponse编写，实现自己的
+* 越权访问的问题：横向越权和纵向越权
+* Guava Cache的简单使用（LoadingCache实现了ConcurrentMap接口）
+* 忘记密码重置密码时要回答对问题，返回一个token，拿token重置密码
+* FTP服务对接
+* SpringMVC文件上传
+* Properties配置文件读取
+* joda-time编写日期格式工具
+* mybatis-pagehelper使用
+* mybatis批量插入，主键生成
+* Jackson 序列化json的工具类封装
+* 分布式Session管理：原生实现与Spring Session原理
+* SpringMVC 全局异常处理
+* SpringMVC 拦截器处理权限与判断登录
+* Spring Schedule 定时任务
+* Redis分布式锁实现原理
+* 一致性哈希原理，Redis客户端分片ShardedJedis
+* Nginx 静态资源映射，反向代理配置
+* 阿里云线上项目自动化部署
