@@ -111,6 +111,7 @@ public ServerResponse<String> del(Integer userId,Integer shippingId){
 4. 将Token返回给客户端
 5. 重置密码的时候需要携带Token
 ### （十一）、缓存（Guava Cache）
+### （十二）、MD5加密（String和byte[]之间的转化)
 ## 五、分类模块
 >>分类模块技术要点：
 1. 递归算法
